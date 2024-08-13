@@ -1,11 +1,20 @@
 import React from "react";
-import Product from "../../pages/Product";
+import { Route, Routes } from "react-router-dom";
+import Home from "../../pages/Home";
+import Contact from "../../pages/Contact";
+import NoMatch from "../../pages/NoMatch";
+import Product from "../../pages/Products";
+import Companies from "../../pages/Companies";
 
 const Body = () => {
     return (
-        <>
-            <Product />
-        </>
+        <Routes>
+            <Route index path="/" element={< Home />} />
+            <Route path="/products" element={< Product />} />
+            <Route path="/companies" element={< Companies />} />
+            <Route path="/contact" element={< Contact />} />
+            <Route path="*" element={< NoMatch />} />
+        </Routes>
     )
 };
 

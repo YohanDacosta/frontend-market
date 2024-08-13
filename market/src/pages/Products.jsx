@@ -4,7 +4,7 @@ import useAxios from '../hooks/useAxios';
 import Loading from '../components/common/Loading';
 import Toast from '../components/common/Toast';
 
-const Product = () => {
+const Products = () => {
     const { data, errors, fetchData } = useAxios();
 
     useEffect(() => {
@@ -13,8 +13,6 @@ const Product = () => {
             method: "GET"
         });
     }, []);
-
-    console.log(data);
 
     const onHandleClick = () => {
         console.log("Clicked");
@@ -83,25 +81,25 @@ const Product = () => {
                                         <input type="checkbox" className="form-checkbox" name="" id="" />
                                     </label>
                                 </td>
-                                <td key={product.id + "productId"} className="border-dashed border-t border-gray-200 productId">
-                                    <span className="text-gray-700 px-6 py-3 flex items-center">{product.id}</span>
+                                <td key={product?.id + "productId"} className="border-dashed border-t border-gray-200 productId">
+                                    <span className="text-gray-700 px-6 py-3 flex items-center">{product?.id}</span>
                                 </td>
-                                <td key={product.id + "name"} className="border-dashed border-t border-gray-200 name">
-                                    <span className="text-gray-700 px-6 py-3 flex items-center">{product.name}</span>
+                                <td key={product?.id + "name"} className="border-dashed border-t border-gray-200 name">
+                                    <span className="text-gray-700 px-6 py-3 flex items-center">{product?.name}</span>
                                 </td>
-                                <td key={product.id + "companyId"} className="border-dashed border-t border-gray-200 companyId">
-                                    <span className="text-gray-700 px-6 py-3 flex items-center">{product.company_id}</span>
+                                <td key={product?.id + "companyId"} className="border-dashed border-t border-gray-200 companyId">
+                                    <span className="text-gray-700 px-6 py-3 flex items-center">{product?.company[0]?.name}</span>
                                 </td>
-                                <td key={product.id + "typeProduct"} className="border-dashed border-t border-gray-200 typeProduct">
-                                    <span className="text-gray-700 px-6 py-3 flex items-center">{product?.type_product}</span>
+                                <td key={product?.id + "typeProduct"} className="border-dashed border-t border-gray-200 typeProduct">
+                                    <span className="text-gray-700 px-6 py-3 flex items-center">{product?.type_product?.description}</span>
                                 </td>
-                                <td key={product.id + "countryId"} className="border-dashed border-t border-gray-200 countryId">
-                                    <span className="text-gray-700 px-6 py-3 flex items-center">{product.country_id}</span>
+                                <td key={product?.id + "countryId"} className="border-dashed border-t border-gray-200 countryId">
+                                    <span className="text-gray-700 px-6 py-3 flex items-center">{product?.country[0]?.name}</span>
                                 </td>
-                                <td key={product.id + "quantity"} className="border-dashed border-t border-gray-200 quantity">
-                                    <span className="text-gray-700 px-6 py-3 flex items-center">{product.quantity}</span>
+                                <td key={product?.id + "quantity"} className="border-dashed border-t border-gray-200 quantity">
+                                    <span className="text-gray-700 px-6 py-3 flex items-center">{product?.quantity}</span>
                                 </td>
-                                <td key={product.id + "actions"} className="border-dashed border-t border-gray-200 actions">
+                                <td key={product?.id + "actions"} className="border-dashed border-t border-gray-200 actions">
                                     <div className='flex'>
                                         <ButtonAction label="Add" onClick={onHandleClick} />
                                         <ButtonAction label="Edit" color="bg-blue-500" onClick={onHandleClick} />
@@ -119,4 +117,4 @@ const Product = () => {
     )
 }
 
-export default Product;
+export default Products;
