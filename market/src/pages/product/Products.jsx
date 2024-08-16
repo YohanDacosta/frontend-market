@@ -1,22 +1,26 @@
 import React, { Suspense, useEffect } from 'react';
-import ButtonAction from '../components/common/ButtonAction';
-import useAxios from '../hooks/useAxios';
-import Loading from '../components/common/Loading';
-import Toast from '../components/common/Toast';
+import ButtonAction from '../../components/common/ButtonAction';
+import useAxios from '../../hooks/useAxios';
+import Loading from '../../components/common/Loading';
+import Toast from '../../components/common/Toast';
+import { Outlet, useNavigate } from 'react-router-dom';
+import useProducts from '../../hooks/useProducts';
 
 const Products = () => {
-    const { data, errors, fetchData } = useAxios();
-
-    useEffect(() => {
-        fetchData({
-            url: "/products",
-            method: "GET"
-        });
-    }, []);
+    const { errors, products } = useProducts();
+    const navigate = useNavigate();
 
     const onHandleClick = () => {
         console.log("Clicked");
-    };
+    }
+
+    const add = () => {
+        navigate(`/product/add/${id}`);
+    }
+
+    const edit = (id) => {
+        navigate(`/product/edit/${id}`);
+    }
 
     return (
         <>
@@ -73,7 +77,7 @@ const Products = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {!data?.errors && data?.data?.map((product, idx) =>
+                            {!errors && products?.map((product, idx) =>
                             (<tr key={product.id + idx}>
                                 <td key={product.id + product.name} className="border-dashed border-t border-gray-200 px-3">
                                     <label
@@ -101,8 +105,8 @@ const Products = () => {
                                 </td>
                                 <td key={product?.id + "actions"} className="border-dashed border-t border-gray-200 actions">
                                     <div className='flex'>
-                                        <ButtonAction label="Add" onClick={onHandleClick} />
-                                        <ButtonAction label="Edit" color="bg-blue-500" onClick={onHandleClick} />
+                                        <ButtonAction label="Add" onClick={add} />
+                                        <ButtonAction label="Edit" color="bg-blue-500" onClick={() => edit(product?.id)} />
                                         <ButtonAction label="Delete" color="bg-red-500" onClick={onHandleClick} />
                                     </div>
                                 </td>
@@ -113,8 +117,9 @@ const Products = () => {
                 </Suspense>
 
             </div>
+            <Outlet />
         </>
     )
 }
 
-export default Products;
+export default Products; 
