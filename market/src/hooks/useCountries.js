@@ -2,19 +2,17 @@ import { useEffect, useState } from "react";
 import useAxios from "./useAxios";
 
 const useCountries = () => {
-    const { data, fetchData } = useAxios();
+    const { fetchData } = useAxios();
     const [ countries, setCountries ] = useState(null); 
     
-    useEffect(() => {
-        fetchData({
+    const handleFetch = async () => {
+        const reponse = await fetchData({
             url: "/countries",
             method: "GET"
         });
-    }, []);
 
-    useEffect(() => {
-        if (data && !data.errors) {
-            const _countries = data.data.map((country) => { 
+        if (reponse && !reponse.errors) {
+            const _countries = reponse.data.map((country) => { 
                 return {
                     "id": country.id, 
                     "name": country.name,
@@ -23,7 +21,11 @@ const useCountries = () => {
 
             setCountries(_countries);
         }
-    }, [data]);
+    }
+    
+    useEffect(() => {
+        handleFetch();
+    }, []);
 
     return { countries };
 }

@@ -1,30 +1,44 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import ButtonAction from '../../components/common/ButtonAction';
 import useAxios from '../../hooks/useAxios';
 import Loading from '../../components/common/Loading';
-import Toast from '../../components/common/Toast';
 import { Outlet, useNavigate } from 'react-router-dom';
-import useProducts from '../../hooks/useProducts';
 
 const Products = () => {
-    const { errors, products } = useProducts();
     const navigate = useNavigate();
+    const { errors, fetchData } = useAxios();
+    const [products, setProducts] = useState([]);
 
-    const onHandleClick = () => {
-        console.log("Clicked");
+    const handleFetch = async () => {
+        const reponse = await fetchData({
+            url: "/products",
+            method: "GET",
+        });
+
+        if (reponse) {
+            setProducts(reponse);
+        }
     }
 
-    const add = () => {
-        navigate(`/product/add/${id}`);
+    useEffect(() => {
+        handleFetch();
+    }, []);
+
+    const handleClickAdd = () => {
+        navigate(`/product/add`);
     }
 
-    const edit = (id) => {
+    const handleClickEdit = async (id) => {
         navigate(`/product/edit/${id}`);
+    }
+
+    const onHandleDelete = (id) => {
+        console.log("Clicked");
+        // navigate(`/product/edit/${id}`);
     }
 
     return (
         <>
-            <Toast errors={errors} />
             <div>
                 <div className='flex mt-4 mb-4'>
                     <div className="flex-1 pr-4">
@@ -77,7 +91,7 @@ const Products = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {!errors && products?.map((product, idx) =>
+                            {!errors && products?.data?.map((product, idx) =>
                             (<tr key={product.id + idx}>
                                 <td key={product.id + product.name} className="border-dashed border-t border-gray-200 px-3">
                                     <label
@@ -105,9 +119,9 @@ const Products = () => {
                                 </td>
                                 <td key={product?.id + "actions"} className="border-dashed border-t border-gray-200 actions">
                                     <div className='flex'>
-                                        <ButtonAction label="Add" onClick={add} />
-                                        <ButtonAction label="Edit" color="bg-blue-500" onClick={() => edit(product?.id)} />
-                                        <ButtonAction label="Delete" color="bg-red-500" onClick={onHandleClick} />
+                                        <ButtonAction label="Add" onClick={handleClickAdd} />
+                                        <ButtonAction label="Edit" color="bg-blue-500" onClick={() => handleClickEdit(product?.id)} />
+                                        <ButtonAction label="Delete" color="bg-red-500" onClick={() => onHandleDelete(product?.id)} />
                                     </div>
                                 </td>
                             </tr>))

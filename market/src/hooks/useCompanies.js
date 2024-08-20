@@ -2,19 +2,17 @@ import { useEffect, useState } from "react";
 import useAxios from "./useAxios";
 
 const useCompanies = () => {
-    const { data, fetchData } = useAxios();
+    const { fetchData } = useAxios();
     const [ companies, setCompanies ] = useState(null); 
-    
-    useEffect(() => {
-        fetchData({
-            url: "/companies",
-            method: "GET"
-        });
-    }, []);
 
-    useEffect(() => {
-        if (data && !data.errors) {
-            const _companies = data.data.map((company) => { 
+    const handleFetch = async () => {
+        const reponse = await fetchData({
+            url: "/companies",
+            method: "GET",
+        });
+
+        if (reponse && !reponse.errors) {
+            const _companies = reponse.data.map((company) => { 
                 return {
                     "id": company.id, 
                     "name": company.name,
@@ -23,8 +21,12 @@ const useCompanies = () => {
 
             setCompanies(_companies);
         }
-    }, [data]);
-
+    }
+    
+    useEffect(() => {
+       handleFetch();
+    }, []);
+    
     return { companies };
 }
 

@@ -3,10 +3,9 @@ import api from "../services/api";
 import axios from "axios";
 
 const useAxios = () => {
-    const [ data, setData ] = useState(null);
-    const [ errors, setErrors ] = useState("");
-    const [ loading, setLoading ] = useState(false);
-    
+    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState("");
+
     const { axios_instance } = api();
 
     let controller = new AbortController();
@@ -15,7 +14,12 @@ const useAxios = () => {
         return () => controller?.abort();
     }, []);
 
-    const fetchData = async({url, method, data = {}, params = {}}) => {
+    const fetchData = async({
+        url, 
+        method, 
+        data = {}, 
+        params = {},
+    }) => {
         setLoading(true);
 
         controller.abort();
@@ -29,7 +33,9 @@ const useAxios = () => {
                 params,
                 signal: controller.signal,
             });
-            setData(response.data);   
+            
+            return response?.data;
+
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log("Request cancelled", error.message);
@@ -41,7 +47,7 @@ const useAxios = () => {
         }
     }
 
-    return {data, errors, loading, fetchData};
+    return {loading, errors, fetchData};
 };
 
 export default useAxios;
