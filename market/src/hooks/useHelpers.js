@@ -7,7 +7,7 @@ const useHelpers = () => {
     const showToats = (data, url) => {
         if (data) {
             if (data?.errors) {
-                toast.error(data?.message);
+                toast.error( Array.isArray(data?.message) ? data?.message[0] : data?.message);
             } else {
                 toast.success(data?.message);
                 navigate(url);

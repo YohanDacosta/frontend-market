@@ -1,18 +1,24 @@
-import React, { Suspense, useEffect, useState } from 'react';
-import ButtonAction from '../../components/common/ButtonAction';
-import useAxios from '../../hooks/useAxios';
-import Loading from '../../components/common/Loading';
 import { Outlet, useNavigate } from 'react-router-dom';
+import React, { Suspense, useEffect, useState } from 'react';
+import useAxios from '../../hooks/useAxios';
+import useHelpers from '../../hooks/useHelpers';
+import Loading from '../../components/common/Loading';
+import CustomModal from '../../components/common/CustomModal';
+import ButtonAction from '../../components/common/ButtonAction';
 
 const Products = () => {
     const navigate = useNavigate();
-    const { errors, fetchData } = useAxios();
+    const { errors, axiosDataGet, axiosDataPost } = useAxios();
     const [products, setProducts] = useState([]);
+    const [show, setShow] = useState(false);
+    const [id, setId] = useState(null);
+    const [data, setData] = useState(null);
+    const { showToats } = useHelpers();
+
 
     const handleFetch = async () => {
-        const reponse = await fetchData({
+        const reponse = await axiosDataGet({
             url: "/products",
-            method: "GET",
         });
 
         if (reponse) {
@@ -28,14 +34,46 @@ const Products = () => {
         navigate(`/product/add`);
     }
 
-    const handleClickEdit = async (id) => {
+    const handleClickEdit = (id) => {
         navigate(`/product/edit/${id}`);
     }
 
-    const onHandleDelete = (id) => {
-        console.log("Clicked");
-        // navigate(`/product/edit/${id}`);
+    const handleClickView = (id) => {
+        navigate(`/product/view/${id}`)
     }
+
+    const onHandleDelete = () => {
+        deleteProduct(id);
+    }
+
+    const deleteProduct = async (id) => {
+        const formData = new FormData();
+        formData.append("data", JSON.stringify({ "id": id }));
+        try {
+            const response = await axiosDataPost({
+                url: "/product/delete",
+                formData
+            });
+
+            setData(response);
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    useEffect(() => {
+        if (errors) {
+            showToats(errors, "");
+            setShow(false);
+        }
+
+        if (data) {
+            showToats(data, "");
+            setShow(false);
+        }
+        handleFetch();
+    }, [errors, data]);
 
     return (
         <>
@@ -55,8 +93,9 @@ const Products = () => {
                         </div>
                     </div>
                     <div className='text-2xl mr-4 text-center font-bold'>List Products</div>
-
+                    <ButtonAction label="New Product" onClick={handleClickAdd} />
                 </div>
+                <CustomModal show={show} setShow={setShow} fnc={onHandleDelete} />
                 <Suspense fallback={<Loading />}>
                     <table className="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
                         <thead>
@@ -91,7 +130,7 @@ const Products = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {!errors && products?.data?.map((product, idx) =>
+                            {products && products?.data?.map((product, idx) =>
                             (<tr key={product.id + idx}>
                                 <td key={product.id + product.name} className="border-dashed border-t border-gray-200 px-3">
                                     <label
@@ -119,9 +158,9 @@ const Products = () => {
                                 </td>
                                 <td key={product?.id + "actions"} className="border-dashed border-t border-gray-200 actions">
                                     <div className='flex'>
-                                        <ButtonAction label="Add" onClick={handleClickAdd} />
+                                        <ButtonAction label="View" onClick={() => handleClickView(product?.id)} />
                                         <ButtonAction label="Edit" color="bg-blue-500" onClick={() => handleClickEdit(product?.id)} />
-                                        <ButtonAction label="Delete" color="bg-red-500" onClick={() => onHandleDelete(product?.id)} />
+                                        <ButtonAction label="Delete" color="bg-red-500" onClick={() => (setId(product?.id), setShow(true))} />
                                     </div>
                                 </td>
                             </tr>))

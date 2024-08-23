@@ -1,25 +1,25 @@
-import { Suspense, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CompaniesContext } from "../../components/layout/Body";
-import image from "../../assets/img/not-image.jpg"
-import Loading from "../../components/common/Loading";
+import { Suspense, useContext, useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
 import useHelpers from "../../hooks/useHelpers";
+import Loading from "../../components/common/Loading";
 import useTypeProducts from "../../hooks/useTypeProducts";
+import CustomDropzone from "../../components/common/CustomDropzone";
 
 const EditProduct = () => {
     const { id } = useParams();
-    const { fetchData } = useAxios();
+    const { axiosDataGet, axiosDataPost } = useAxios();
     const [product, setProduct] = useState();
     const [data, setData] = useState(null);
+    const [file, setFile] = useState(null);
     const { companies, countries } = useContext(CompaniesContext);
     const { typeProducts } = useTypeProducts();
     const { showToats } = useHelpers();
 
     const handleFetch = async () => {
-        const reponse = await fetchData({
+        const reponse = await axiosDataGet({
             url: `/product/${id}`,
-            method: "GET",
         });
 
         if (reponse && !reponse.errors) {
@@ -32,19 +32,25 @@ const EditProduct = () => {
                 country: reponse.data[0].country?.map((c) => c.id),
                 imported: Number(reponse.data[0].imported),
                 caducated: Number(reponse.data[0].caducated),
+                photo: reponse.data[0].photo ?? null,
             }
+
             setProduct(_products);
         }
     }
 
     const handleFetchEdit = async () => {
-        const data = JSON.stringify(product);
+        const formData = new FormData();
+
+        if (file && file?.length !== 0) {
+            formData.append("file", file);
+        }
+        formData.append("data", JSON.stringify(product));
 
         try {
-            const response = await fetchData({
+            const response = await axiosDataPost({
                 url: "/product/edit",
-                method: "PUT",
-                data: data,
+                formData,
             });
 
             setData(response);
@@ -171,18 +177,13 @@ const EditProduct = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="mt-4">
+                    <div className="mt-4 mb-4">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold" htmlFor="image-product">
-                                Photo
-                            </label>
-                            <input className="h-40 w-44 border border-grey-lighter rounded-md py-3 px-4 m-2" id="image-product" type="image" name="photo" src={image} alt="Not Image" />
+                            <CustomDropzone image={product?.photo} fnc={setFile} disabled={false} />
                         </div>
                     </div>
                     <div className="flex m-4">
-                        <button className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none" onSubmit={onSubmit}>
-                            Add
-                        </button>
+                        <button className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none" type="submit">Add</button>
                     </div>
                 </div>
             </form>

@@ -24,7 +24,7 @@ const Body = () => {
                 <Route path="/product/*" >
                     <Route path="all" element={< Products />} />
                     <Route path="view/:id" element={< ViewProduct />} />
-                    <Route path="add/:id" element={< AddProduct />} />
+                    <Route path="add" element={< AddProduct />} />
                     <Route path="edit/:id" element={< EditProduct />} />
                     <Route path="*" element={< NoMatch />} />
                 </Route>

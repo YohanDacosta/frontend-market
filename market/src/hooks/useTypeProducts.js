@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import useAxios from "./useAxios";
 
 const useTypeProducts = () => {
-    const { fetchData } = useAxios();
+    const { axiosDataGet } = useAxios();
     const [ typeProducts, setTypeProducts ] = useState(null); 
     
     const handleFetch = async () => {
-        const reponse = await fetchData({
-            url: "/type_products",
-            method: "GET"
+        const reponse = await axiosDataGet({
+            url: "/type_products"
         });
 
         if (reponse && !reponse.errors) {

@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import useAxios from "./useAxios";
 
 const useCompanies = () => {
-    const { fetchData } = useAxios();
+    const { axiosDataGet } = useAxios();
     const [ companies, setCompanies ] = useState(null); 
 
     const handleFetch = async () => {
-        const reponse = await fetchData({
+        const reponse = await axiosDataGet({
             url: "/companies",
-            method: "GET",
         });
 
         if (reponse && !reponse.errors) {
