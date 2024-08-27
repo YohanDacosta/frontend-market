@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import useTypeProducts from "../../hooks/useTypeProducts";
-import useCompanies from "../../hooks/useCompanies";
-import useCountries from "../../hooks/useCountries";
-import useAxios from "../../hooks/useAxios";
-import useHelpers from "../../hooks/useHelpers";
+import { useAxios, useHelpers, useCompanies, useCountries, useTypeProducts } from "../../hooks";
 import CustomDropzone from "../../components/common/CustomDropzone";
 
 const AddProduct = () => {

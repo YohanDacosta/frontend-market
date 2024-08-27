@@ -1,11 +1,8 @@
 import { useParams } from "react-router-dom";
 import { CompaniesContext } from "../../components/layout/Body";
 import { Suspense, useContext, useEffect, useState } from "react";
-import useAxios from "../../hooks/useAxios";
-import useHelpers from "../../hooks/useHelpers";
-import Loading from "../../components/common/Loading";
-import useTypeProducts from "../../hooks/useTypeProducts";
-import CustomDropzone from "../../components/common/CustomDropzone";
+import { useAxios, useHelpers, useTypeProducts } from "../../hooks";
+import { Loading, CustomDropzone } from "../../components/common";
 
 const EditProduct = () => {
     const { id } = useParams();
@@ -90,7 +87,7 @@ const EditProduct = () => {
     }, [data]);
 
     return (
-        < Suspense fallback={< Loading />}>
+        < Suspense fallback={Loading}>
             <form action="" method="post" onSubmit={onSubmit}>
                 <div className="flex flex-col bg-white rounded shadow-md mt-4">
                     <div className="flex-row">

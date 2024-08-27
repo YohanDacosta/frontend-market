@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { CompaniesContext } from '../../components/layout/Body';
 import React, { Suspense, useContext, useEffect, useState } from 'react';
-import useAxios from '../../hooks/useAxios';
-import Loading from '../../components/common/Loading';
+import { useAxios } from '../../hooks';
+import { Loading } from '../../components/common';
 
 const ViewCompany = () => {
     const { id } = useParams();
@@ -26,7 +26,7 @@ const ViewCompany = () => {
 
     return (
         <>
-            < Suspense fallback={< Loading />}>
+            < Suspense fallback={Loading}>
                 <form>
                     <div className="flex flex-col bg-white rounded shadow-md mt-4">
                         <div className="flex-row">

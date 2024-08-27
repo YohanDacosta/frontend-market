@@ -1,18 +1,9 @@
 import { createContext } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
-import Home from "../../pages/Home";
-import Contact from "../../pages/Contact";
-import NoMatch from "../../pages/NoMatch";
-import Companies from "../../pages/company/Companies.jsx";
-import Products from "../../pages/product/Products.jsx";
-import AddProduct from "../../pages/product/AddProduct.jsx";
-import EditProduct from "../../pages/product/EditProduct.jsx";
-import ViewProduct from "../../pages/product/ViewProduct.jsx";
-import useCompanies from "../../hooks/useCompanies.js";
-import useCountries from "../../hooks/useCountries.js";
-import AddCompany from "../../pages/company/AddCompany.jsx";
-import EditCompany from "../../pages/company/EditCompany.jsx";
-import ViewCompany from "../../pages/company/ViewCompany.jsx";
+import { useCompanies, useCountries } from "../../hooks";
+import { Products, AddProduct, EditProduct, ViewProduct } from "../../pages/product";
+import { Companies, AddCompany, EditCompany, ViewCompany } from "../../pages/company";
+import { Home, Contact, NoMatch } from "../../pages";
 
 export const CompaniesContext = createContext();
 

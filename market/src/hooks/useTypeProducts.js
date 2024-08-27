@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useAxios from "./useAxios";
+import {useAxios} from "../hooks";
 
 const useTypeProducts = () => {
     const { axiosDataGet } = useAxios();
