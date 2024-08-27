@@ -1,8 +1,7 @@
 import { CompaniesContext } from "../../components/layout/Body";
 import { Suspense, useContext, useEffect, useState } from "react";
-import useAxios from "../../hooks/useAxios";
-import useHelpers from "../../hooks/useHelpers";
-import Loading from "../../components/common/Loading";
+import { useAxios, useHelpers } from "../../hooks";
+import { Loading } from "../../components/common"
 
 const initialStateCountry = {
     id: '',
@@ -56,7 +55,7 @@ const AddCompany = () => {
     }
 
     return (
-        < Suspense fallback={< Loading />}>
+        < Suspense fallback={Loading}>
             <form action="" method="post" onSubmit={onSubmit}>
                 <div className="flex flex-col bg-white rounded shadow-md mt-4">
                     <div className="flex-row">

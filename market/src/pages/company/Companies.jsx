@@ -2,11 +2,8 @@ import { format } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 import { Outlet, useNavigate } from 'react-router-dom';
 import React, { Suspense, useEffect, useState } from 'react';
-import useAxios from '../../hooks/useAxios';
-import useHelpers from '../../hooks/useHelpers';
-import Loading from '../../components/common/Loading';
-import CustomModal from '../../components/common/CustomModal';
-import ButtonAction from '../../components/common/ButtonAction';
+import { useAxios, useHelpers } from '../../hooks';
+import { Loading, CustomModal, ButtonAction } from '../../components/common';
 
 const Companies = () => {
     const navigate = useNavigate();
@@ -97,7 +94,7 @@ const Companies = () => {
                     <ButtonAction label="New Company" onClick={handleClickAdd} />
                 </div>
                 <CustomModal show={show} setShow={setShow} fnc={onHandleDelete} />
-                <Suspense fallback={<Loading />}>
+                <Suspense fallback={Loading}>
                     <table className="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
                         <thead>
                             <tr className="text-left">
