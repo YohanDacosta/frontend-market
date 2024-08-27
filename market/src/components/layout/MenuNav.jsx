@@ -9,7 +9,7 @@ const MenuNav = () => {
                 <ul className='flex gap-[40px] text-m'>
                     <Link to="/">Home</Link>
                     <Link to="/product/all">Products</Link>
-                    <Link to="/companies">Companies</Link>
+                    <Link to="/company/all">Companies</Link>
                     <Link to="/contact">Contact</Link>
                 </ul>
             </div>
