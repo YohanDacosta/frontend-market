@@ -14,4 +14,9 @@ CRUD MARKET
 ###### View a company
 ###### Delete a company
 
+# CONFIGURATIONS
+#### 1. cd market
+#### 2. npm install
+#### 3. npm run dev
+
 
