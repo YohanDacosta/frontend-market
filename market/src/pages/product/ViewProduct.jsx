@@ -16,21 +16,21 @@ const ViewProduct = () => {
 
 
     const handleFetch = async () => {
-        const reponse = await axiosDataGet({
+        const response = await axiosDataGet({
             url: `/product/${id}`,
         });
 
-        if (reponse && !reponse.errors) {
+        if (response && !response.errors) {
             const _products = {
-                id: reponse.data[0].id,
-                name: reponse.data[0].name,
-                type_product: reponse.data[0].type_product.id,
-                quantity: reponse.data[0].quantity,
-                company: reponse.data[0].company?.map((c) => c.id),
-                country: reponse.data[0].country?.map((c) => c.id),
-                imported: Number(reponse.data[0].imported),
-                caducated: Number(reponse.data[0].caducated),
-                photo: reponse.data[0].photo ?? null,
+                id: response.data[0].id,
+                name: response.data[0].name,
+                type_product: response.data[0].type_product.id,
+                quantity: response.data[0].quantity,
+                company: response.data[0].company?.map((c) => c.id),
+                country: response.data[0].country?.map((c) => c.id),
+                imported: Number(response.data[0].imported),
+                caducated: Number(response.data[0].caducated),
+                photo: response.data[0].photo ?? null,
             }
 
             setProduct(_products);
